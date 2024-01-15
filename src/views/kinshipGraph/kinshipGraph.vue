@@ -46,7 +46,7 @@ export default {
         width,
         height,
         defaultNode: {
-          size: 2,
+          size: 8,
           style: {
             fill: '#C6E5FF',
             stroke: '#5B8FF9',
@@ -63,7 +63,14 @@ export default {
         defaultEdge: {
           size: 0.1,
           color: '#333',
-          type: 'line'
+          type: 'line',
+          labelCfg: {
+            style: {
+              fontSize: 6
+            },
+            position: 'right',
+            offset: 1
+          }
         },
         nodeStateStyles: {
           selected: {
@@ -91,21 +98,28 @@ export default {
             'drag-node',
             'brush-select'
           ] // 'drag-canvas',
+        },
+        layout: {
+          type: 'gForce'
         }
       })
-      this.dataList = require('../../mock/data/test.json')
-      this.dataList.nodes.forEach((node) => {
-        node.label = node.olabel
-        node.labelCfg.style = {
-          fontSize: 1.3
-        }
-        node.degree = 0
-        this.dataList.edges.forEach((edge) => {
-          if (edge.source === node.id || edge.target === node.id) {
-            node.degree++
-          }
-        })
-      })
+      let dataList = require('../../mock/data/test51Data.json')
+      this.dataList = {
+        nodes: dataList.kinshipNodes,
+        edges: dataList.kinshipEdges
+      }
+      // this.dataList.nodes.forEach((node) => {
+      //   node.label = node.olabel
+      //   node.labelCfg.style = {
+      //     fontSize: 1.3
+      //   }
+      //   node.degree = 0
+      //   this.dataList.edges.forEach((edge) => {
+      //     if (edge.source === node.id || edge.target === node.id) {
+      //       node.degree++
+      //     }
+      //   })
+      // })
       console.log('原始数据', this.dataList.nodes.length, this.dataList.edges.length)
       mapNodeSize(this.dataList.nodes, 'degree', [1, 15])
       graph.data(this.dataList)
@@ -129,7 +143,7 @@ export default {
       const nodeLen = graphData.nodes.length
       const edgeLen = graphData.edges.length
       descriptionDiv.innerHTML = `节点数量：${nodeLen}, 边数量：${edgeLen}, 图元数量：${
-        nodeLen * 2 + edgeLen
+        nodeLen * 2 + edgeLen * 2
       }`
       if (typeof window !== 'undefined') {
         window.onresize = () => {
