@@ -1,5 +1,8 @@
 <template>
   <div>
+    <a @click="getData('g6')">G6 官网数据</a>
+    <a @click="getData('51')">51 测试环境数据</a>
+    <a @click="getData('51graph')">51 画布生产数据</a>
     <div id="container" style="margin-top: 30px" />
   </div>
 </template>
@@ -15,9 +18,20 @@ export default {
     }
   },
   mounted () {
-    this.init()
+    // this.init()
   },
   methods: {
+    getData (type) {
+      this.dataList = []
+      if (type === 'g6') {
+        this.dataList = require('../../mock/data/test.json')
+      } else if (type === '51') {
+        this.dataList = require('../../mock/data/test51Data.json')
+      } else if (type === '51graph') {
+        this.dataList = require('../../mock/data/test51graphdata.json')
+      }
+      this.init()
+    },
     init () {
       const mapNodeSize = (nodes, propertyName, visualRange) => {
         let minp = 9999999999
@@ -103,7 +117,7 @@ export default {
           type: 'gForce'
         }
       })
-      this.dataList = require('../../mock/data/test.json')
+      // this.dataList = require('../../mock/data/test.json')
       // this.dataList = {
       //   nodes: dataList.kinshipNodes,
       //   edges: dataList.kinshipEdges
@@ -127,9 +141,12 @@ export default {
       graph.render()
       graph.on('afterlayout', e => {
         this.endTime = new Date().getTime()
+        let graphData = graph.save()
         console.log('渲染时间', this.endTime - this.startTime)
+        console.log('图数据', JSON.stringify(graphData))
       })
-
+      this.endTime = new Date().getTime()
+      console.log('渲染时间', this.endTime - this.startTime)
       graph.on('node:mouseenter', (e) => {
         const { item } = e
         graph.setItemState(item, 'hover', true)
@@ -158,5 +175,8 @@ export default {
 </script>
 
 <style>
-
+a{
+  cursor: pointer;
+  color: #0af;
+}
 </style>
