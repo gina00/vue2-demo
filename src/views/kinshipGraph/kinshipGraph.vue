@@ -9,7 +9,9 @@ import G6 from '@antv/g6'
 export default {
   data () {
     return {
-      dataList: []
+      dataList: [],
+      startTime: null,
+      endTime: null
     }
   },
   mounted () {
@@ -37,8 +39,8 @@ export default {
       descriptionDiv.innerHTML = `正在渲染大规模数据，请稍等……`
       container.appendChild(descriptionDiv)
 
-      const width = container.scrollWidth
-      const height = container.scrollHeight || 500
+      const width = 1920
+      const height = 700
       const graph = new G6.Graph({
         container: 'container',
         width,
@@ -107,7 +109,13 @@ export default {
       console.log('原始数据', this.dataList.nodes.length, this.dataList.edges.length)
       mapNodeSize(this.dataList.nodes, 'degree', [1, 15])
       graph.data(this.dataList)
+      this.startTime = new Date().getTime()
       graph.render()
+      graph.on('afterlayout', e => {
+        this.endTime = new Date().getTime()
+        console.log('渲染时间', this.endTime - this.startTime)
+      })
+
       graph.on('node:mouseenter', (e) => {
         const { item } = e
         graph.setItemState(item, 'hover', true)
