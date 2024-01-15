@@ -103,11 +103,11 @@ export default {
           type: 'gForce'
         }
       })
-      let dataList = require('../../mock/data/test51Data.json')
-      this.dataList = {
-        nodes: dataList.kinshipNodes,
-        edges: dataList.kinshipEdges
-      }
+      this.dataList = require('../../mock/data/test.json')
+      // this.dataList = {
+      //   nodes: dataList.kinshipNodes,
+      //   edges: dataList.kinshipEdges
+      // }
       // this.dataList.nodes.forEach((node) => {
       //   node.label = node.olabel
       //   node.labelCfg.style = {
